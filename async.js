@@ -8,9 +8,10 @@ const nextprevDom = document.querySelector("#nextprevWrapper")
 async function getPokemonsAsy() {
     const result = await fetch(baseUrl)
     const data = await result.json()
+    getPokemons(data)
 }
 
-fetch(baseUrl).then((result) => result.json()).then((data) => { getPokemons(data) });
+
 
 function getPokemons(data) {
 
@@ -79,4 +80,4 @@ function handleClick(event) {
 }
 
 
-
+// Nået til 06:17 i 03-pokemons video.
