@@ -1,24 +1,31 @@
 const wrapper = document.querySelector("#wrapper")
 const baseUrl = `https://pokeapi.co/api/v2/pokemon/`
 
-console.log(wrapper);
+const nextprevWrapper = /*html*/ `<div id="nextprevWrapper"></div>`
+wrapper.insertAdjacentHTML("beforebegin", nextprevWrapper)
+const nextprevDom = document.querySelector("#nextprevWrapper")
 
 fetch(baseUrl).then((result) => result.json()).then((data) => { getPokemons(data) });
 
 function getPokemons(data) {
-    console.log(data);
+
+    nextprev(data);
+    handleNextPrevLink()
+
     data.results.map((element) => {
         const url = element.url
         fetch(url).then((result) => result.json()).then((data) => {
             console.log(data);
+
             displayPokemon(data)
+
 
         })
     })
 
 }
 function displayPokemon(data) {
-    console.log(data);
+    //console.log(data);
 
     const imgSrc = data.sprites.other["official-artwork"]["front_default"]
     const spriteTemplate =/*html*/ `
@@ -33,3 +40,34 @@ function displayPokemon(data) {
     //console.log(data);
 
 }
+
+function nextprev(data) {
+    console.log(data);
+
+    const next = data.next
+    const prev = data.previous
+
+    const nextprevTemplate =/*html*/ `
+       <ul>
+           ${data.previous ? /*html*/ `<li><a href="${data.previous}">PREVIOUS</a></li>` : /*html*/ `<li>PREVIOUS</li>`}
+           ${data.next ? /*html*/ `<li><a href="${data.next}">NEXT</a></li>` : /*html*/ `<li>NEXT</li>`}
+
+           
+        </ul>
+    `
+    nextprevDom.insertAdjacentHTML("beforeend", nextprevTemplate)
+
+    console.log(next, prev);
+
+}
+
+function handleNextPrevLink() {
+    nextprevDom.addEventListener("click", handleClick)
+}
+
+function handleClick(event) {
+    event.preventDefault()
+    console.log(event.target);
+}
+
+// Nået til 23:15 i Steens Pokemon video nr. 2
