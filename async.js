@@ -5,8 +5,10 @@ const nextprevWrapper = /*html*/ `<div id="nextprevWrapper"></div>`
 wrapper.insertAdjacentHTML("beforebegin", nextprevWrapper)
 const nextprevDom = document.querySelector("#nextprevWrapper")
 
-async function getPokemonsAsy() {
-    const result = await fetch(baseUrl)
+async function getPokemonsAsy(offset, limit) {
+    url = `${baseUrl}?offset=${offset}&limit=${limit}`
+
+    const result = await fetch(url)
     const data = await result.json()
     getPokemons(data)
 }
@@ -14,7 +16,7 @@ async function getPokemonsAsy() {
 
 
 function getPokemons(data) {
-
+    wrapper.innerHTML = ""
     nextprev(data);
     handleNextPrevLink()
 
@@ -31,7 +33,7 @@ function getPokemons(data) {
 
 }
 function displayPokemon(data) {
-    //console.log(data);
+
 
     const imgSrc = data.sprites.other["official-artwork"]["front_default"]
     const spriteTemplate =/*html*/ `
@@ -48,11 +50,11 @@ function displayPokemon(data) {
 }
 
 function nextprev(data) {
-    console.log(data);
+
 
     const next = data.next
     const prev = data.previous
-
+    nextprevDom.innerHTML = ""
     const nextprevTemplate =/*html*/ `
        <ul>
            ${data.previous ? /*html*/ `<li><a href="${data.previous}">PREVIOUS</a></li>` : /*html*/ `<li>PREVIOUS</li>`}
@@ -77,7 +79,18 @@ function handleClick(event) {
 
 
     console.log(event.target.href);
+    const url = new URL(event.target.href)
+    const params = new URLSearchParams(url.search)
+    const limit = params.get("limit")
+    const offset = params.get("offset")
+    console.log(limit);
+    console.log(offset);
+
+    getPokemonsAsy(offset, limit)
+
+
 }
 
+getPokemonsAsy(0, 20)
 
-// Nået til 06:17 i 03-pokemons video.
+// Nået til pokemon video 4.
