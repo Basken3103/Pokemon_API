@@ -10,7 +10,19 @@ async function getPokemonsAsy(offset, limit) {
 
     const result = await fetch(url)
     const data = await result.json()
+    console.log(data);
+
     getPokemons(data)
+
+
+    const { currentPage, totalPages } = getPageNumber(offset, limit, data.count)
+    console.log(currentPage, totalPages);
+}
+
+function getPageNumber(offset, limit, numberOfPokemons) {
+    const currentPage = Math.floor((offset / limit) + 1)
+    const totalPages = Math.ceil(numberOfPokemons / limit)
+    return { currentPage, totalPages }
 }
 
 
@@ -93,4 +105,5 @@ function handleClick(event) {
 
 getPokemonsAsy(0, 20)
 
-// Nået til pokemon video 4.
+
+
