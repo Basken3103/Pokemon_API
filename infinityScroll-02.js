@@ -26,12 +26,17 @@ async function getPokens(limit, offset) {
 function displayPokemon(data) {
 
     const pokemons = data.results.map(pokemon => {
-        const imgIndex = pokemon.url.slice(0, -1).spilt("/").pop()
+        //console.log(pokemon.url)
+        //console.log(pokemon.url.slice(0, -1))
+        //console.log(pokemon.url.slice(0, -1))
+
+        const imgIndex = pokemon.url.slice(0, -1).split("/").pop()
+
         const basePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/"
         const imgPath = `${basePath}${imgIndex}.png`
         const pokemonTemplate = /*html*/`
         <figure>
-            <img src= "${imgPath}" alt="${pokemon.name}" />
+            <img src= "${imgPath}" loading="lazy" alt="${pokemon.name}" />
             <figcaption><span>${pokemon.name}</span><span class="pokemon-number">${pokemon.name}</span></figcaption> 
         </figure>
     `
@@ -43,5 +48,17 @@ function displayPokemon(data) {
     observeDom()
 }
 
-// Er nået til 8:52 video nr. 6 - pokemon.
+//IntersectionObserver til infinite scroll
+// const observer = new IntersectionObserver((entires)) => {
+
+// }, {
+//     threshold: 1.0
+// })
+
+// Første load
+let limit = 30
+let offset = 0
+getPokens(limit, offset)
+
+
 
