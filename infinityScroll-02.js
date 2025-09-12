@@ -52,7 +52,7 @@ function displayPokemon(data) {
         return pokemonTemplate
 
     }).join("")
-    main.insertAdjacentHTML("beforeend", pokemons)
+    main.insertAdjacentHTML("afterbegin", pokemons)
     // Find nyt næste element to observe
     figures = main.querySelectorAll("figure")
 

@@ -1,3 +1,33 @@
 .observer {
     background-color: aqua;
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: linear-gradient(135deg, blue, #ff8177);
+    color: #222;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #ff8177;
+}
+
+div#main-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
