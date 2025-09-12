@@ -1,4 +1,5 @@
 const main = document.querySelector("#main-wrapper")
+
 let last;
 
 async function getPokens(limit, offset) {
@@ -15,6 +16,8 @@ async function getPokens(limit, offset) {
 
         const data = await result.json()
         last = data.next == null // if there is no next one stop
+        console.log(data);
+
 
         displayPokemon(data) //
     } catch (err) {
@@ -22,8 +25,11 @@ async function getPokens(limit, offset) {
 
     }
 
+
+
 }
 function displayPokemon(data) {
+
 
     const pokemons = data.results.map(pokemon => {
         //console.log(pokemon.url)
@@ -34,6 +40,8 @@ function displayPokemon(data) {
 
         const basePath = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/"
         const imgPath = `${basePath}${imgIndex}.png`
+
+
         const pokemonTemplate = /*html*/`
         <figure>
             <img src= "${imgPath}" loading="lazy" alt="${pokemon.name}" />
@@ -45,15 +53,31 @@ function displayPokemon(data) {
 
     }).join("")
     main.insertAdjacentHTML("beforeend", pokemons)
-    observeDom()
+    // Find nyt næste element to observe
+    figures = main.querySelectorAll("figure")
+
+    console.log(figures[figures.length - 6]);
+
+    const nextObserverElement = figures[figures.length - 6]
+    // console.log(nextObserverElement);
+
+    nextObserverElement.classList.add("observer")
+    // Flyt observeren til det nye element
+    observer.disconnect()
+    observer.observe(nextObserverElement)
 }
 
 //IntersectionObserver til infinite scroll
-// const observer = new IntersectionObserver((entires)) => {
-
-// }, {
-//     threshold: 1.0
-// })
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            offset += limit
+            getPokens(limit, offset)
+        }
+    })
+}, {
+    threshold: 1.0
+})
 
 // Første load
 let limit = 30
